@@ -1,0 +1,11 @@
+name: PR
+
+on:
+  pull_request:
+
+jobs:
+  precommit:
+    uses: ./.github/workflows/precommit.yml
+
+  unittest:
+    uses: ./.github/workflows/test.yml

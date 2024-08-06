@@ -1,0 +1,22 @@
+name: Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: tag
+  cancel-in-progress: true
+
+jobs:
+  release:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      pypi_password: ${{ secrets.PYPI_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

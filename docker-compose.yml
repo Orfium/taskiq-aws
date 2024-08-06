@@ -1,0 +1,22 @@
+
+services:
+
+  localstack:
+    container_name: taskiq_sqs_localstack
+    image: localstack/localstack:3.6
+    ports:
+      - "127.0.0.1:4566:4566"
+    env_file:
+      - ./.envs/.localstack
+    volumes:
+      - "./localstack/scripts:/etc/localstack/init/ready.d/"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: >
+        bash -c '
+        awslocal sqs list-queues &&
+        awslocal cloudformation list-stacks
+        '
+      interval: 30s
+      timeout: 10s
+      retries: 5

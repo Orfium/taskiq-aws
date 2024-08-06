@@ -1,0 +1,49 @@
+on:
+  workflow_call:
+    secrets:
+      ORFIUM_GITHUB_APP_CI_CD_APP_ID:
+        required: true
+      ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY:
+        required: true
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_ID }}
+          private-key: ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          architecture: x64
+      - name: Checkout Repository
+        uses: actions/checkout@main
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+      - name: Install dependencies
+        run: pip install -U commitizen
+      - name: Create version-merge branch
+        run: git checkout -b version-merge
+      - name: Push branch
+        run: git push origin version-merge
+      - name: Create bump and changelog
+        uses: commitizen-tools/commitizen-action@master
+        with:
+          github_token: ${{ steps.app-token.outputs.token }}
+          branch: version-merge
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          base: main
+          token: ${{ steps.app-token.outputs.token }}
+          branch: version-merge
+          delete-branch: true
+          title: "Merge version bump"
+          commit-message: "bump: automated merge of version bump"
+          labels: "automated-pr"
