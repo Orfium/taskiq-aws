@@ -1,0 +1,13 @@
+
+services:
+  localstack:
+    container_name: taskiq_sqs_localstack
+    image: localstack/localstack:3.6
+    ports:
+      - "127.0.0.1:4566:4566"
+    env_file:
+      - ./.envs/.localstack
+    volumes:
+      - "./localstack/scripts:/etc/localstack/init/ready.d/"
+      - "./infra/lambdas:/var/task/lambdas"
+      - "/var/run/docker.sock:/var/run/docker.sock"

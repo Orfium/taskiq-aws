@@ -1,0 +1,5 @@
+
+AWS_ACCESS_KEY_ID=FAKE # pragma: allowlist secret
+AWS_SECRET_ACCESS_KEY=FAKE # pragma: allowlist secret
+AWS_ENDPOINT_URL=http://localhost:4566 # pragma: allowlist secret
+TEST_SQS_QUEUE_URL=http://localhost:4566/000000000000/Queue # pragma: allowlist secret
