@@ -1,0 +1,27 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - "main"
+
+concurrency:
+  group: main
+  cancel-in-progress: true
+
+jobs:
+  precommit:
+    uses: ./.github/workflows/precommit.yml
+
+  unittest:
+    uses: ./.github/workflows/test.yml
+
+  bump:
+    if: "!startsWith(github.event.head_commit.message, 'bump:')"
+    needs:
+      - unittest
+      - precommit
+    uses: ./.github/workflows/bump.yml
+    secrets:
+      ORFIUM_GITHUB_APP_CI_CD_APP_ID: ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_ID }}
+      ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY : ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY }}

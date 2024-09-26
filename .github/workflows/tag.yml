@@ -1,0 +1,16 @@
+name: Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: tag
+  cancel-in-progress: true
+
+jobs:
+  release:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      pypi_password: ${{ secrets.pypi_password }}

@@ -37,6 +37,7 @@ repos:
         pass_filenames: false
         types: [python]
         args:
+          - "check"
           - "--fix"
           - "taskiq_sqs"
           - "tests"

@@ -1,6 +1,6 @@
 import asyncio
 import uuid
-from typing import List, Tuple, Union
+from typing import Union
 
 import pytest
 from taskiq import AckableMessage, AsyncBroker, BrokerMessage
@@ -61,9 +61,6 @@ async def test_sqs_broker(
     await broker.kick(valid_broker_message)
     await asyncio.sleep(0.3)
 
-    message1 = await anext(broker.listen())
-    # import pdb
-
-    # pdb.set_trace()
+    message1 = await anext(broker.listen())  # noqa
     assert message1.data == valid_broker_message.message
     await broker.shutdown()
