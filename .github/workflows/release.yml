@@ -1,24 +1,62 @@
-name: Release python package
-
 on:
-  push:
-    tags:
-      - "*"
+  workflow_call:
+    secrets:
+      pypi_password:
+        required: true
 
 jobs:
-  deploy:
+  detect-release-parameters:
     runs-on: ubuntu-latest
+    outputs:
+      notes: ${{ steps.generate_notes.outputs.notes }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Install poetry
-        run: pipx install poetry
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install deps
-        run: poetry install
-      - name: Release package
+          python-version: "3.10"
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get release notes
+        id: generate_notes
+        uses: anmarkoulis/commitizen-changelog-reader@v1.2.0
+        with:
+          tag_name: ${{ github.ref }}
+          changelog: CHANGELOG.md
+
+  release:
+    runs-on: ubuntu-20.04
+    needs: detect-release-parameters
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: make dep
+      - name: Configure pypi token
+        run: |
+          poetry config pypi-token.pypi ${{ secrets.pypi_password }}
+      # - name: Build and publish package
+      #   run: make publish-package
+
+  release-github:
+    runs-on: ubuntu-latest
+    needs: [ release, detect-release-parameters ]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Create Release Notes File
+        run: |
+          echo "${{ join(fromJson(needs.detect-release-parameters.outputs.notes).notes, '') }}" > release_notes.txt
+      - name: Create GitHub Release
         env:
-          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
-        run: poetry publish --build
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ github.ref_name }}
+        run: |
+          gh release create ${{ github.ref }} \
+          --title "Release $VERSION" \
+          --notes-file "release_notes.txt"

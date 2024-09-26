@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 jobs:
-  test:
+  precommit:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,5 +15,5 @@ jobs:
           architecture: x64
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Run tests with coverage
-        run: make test-with-coverage-report
+      - name: Run precommit
+        run: make pre-commit args=--all-files

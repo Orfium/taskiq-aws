@@ -1,13 +1,11 @@
 import base64
 import json
-import logging
 from logging import getLogger
 from typing import AsyncGenerator, Callable, Optional, TypeVar
 
 from aiobotocore.client import AioBaseClient
 from aiobotocore.session import AioSession, get_session
 from taskiq import AckableMessage, AsyncBroker, BrokerMessage
-from taskiq.abc.broker import AsyncBroker
 from taskiq.abc.result_backend import AsyncResultBackend
 
 _T = TypeVar("_T")
@@ -16,6 +14,7 @@ logger = getLogger("taskiq.sqs_broker")
 
 
 class SQSBroker(AsyncBroker):
+    """Broker for AWS SQS, manages sending, receiving, encoding, and acknowledgment."""
 
     def __init__(
         self,
@@ -37,12 +36,25 @@ class SQSBroker(AsyncBroker):
         self.aws_region = aws_region
 
     async def shutdown(self) -> None:
+        """Shuts down broker and cleans resources, calling superclass cleanup method.
+
+        Returns:
+            None
+        """
         await super().shutdown()
 
     async def kick(self, message: BrokerMessage) -> None:
+        """Encodes and sends a message to SQS, logs success or raises error.
+
+        Args:
+            message: The message to be sent to the SQS queue.
+        Raises:
+            Exception: If there is an error while sending the message.
+        """
         if self.session:
             async with self.session.create_client(
-                "sqs", region_name=self.aws_region
+                "sqs",
+                region_name=self.aws_region,
             ) as client:
                 try:
                     message_base64 = base64.b64encode(message.message).decode("utf-8")
@@ -54,20 +66,28 @@ class SQSBroker(AsyncBroker):
                     }
                     message_json = json.dumps(message_payload)
                     await client.send_message(
-                        QueueUrl=self.queue_url, MessageBody=message_json
+                        QueueUrl=self.queue_url,
+                        MessageBody=message_json,
                     )
-                    # logger.info("Message sent")
-                    print("Message sent")
+                    logger.info("Message sent")
                 except Exception as e:
-                    # logger.error(f"Error sending message: {e}")
-                    print(f"Error sending message: {e}")
+                    logger.error(f"Error sending message: {e}")
                     raise e
 
     async def listen(self) -> AsyncGenerator[AckableMessage, None]:
+        """Continuously polls SQS for messages, yielding and processing each one.
+
+        Yields:
+            AckableMessage: An object representing the
+            received message that can be acknowledged.
+        Raises:
+            Exception: If there is an error while receiving messages.
+        """
         if not self.session:
             return
         async with self.session.create_client(
-            "sqs", region_name=self.aws_region
+            "sqs",
+            region_name=self.aws_region,
         ) as client:
             while True:
                 try:
@@ -94,11 +114,22 @@ class SQSBroker(AsyncBroker):
                     raise e
 
     async def acknowledge_message(
-        self, client: AioBaseClient, receipt_handle: str
+        self,
+        client: AioBaseClient,
+        receipt_handle: str,
     ) -> None:
+        """Acknowledges and deletes a processed SQS message, logs or raises error.
+
+        Args:
+            client: The SQS client used to communicate with the AWS service.
+            receipt_handle: The receipt handle of the message to acknowledge.
+        Raises:
+            Exception: If there is an error while acknowledging the message.
+        """
         try:
             await client.delete_message(
-                QueueUrl=self.queue_url, ReceiptHandle=receipt_handle
+                QueueUrl=self.queue_url,
+                ReceiptHandle=receipt_handle,
             )
             logger.info("Message acknowledged")
         except Exception as e:

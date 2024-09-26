@@ -1,5 +1,4 @@
 import os
-from typing import List, Tuple
 
 import pytest
 
@@ -27,5 +26,6 @@ def sqs_queue_url() -> str:
     :return: URL string.
     """
     return os.environ.get(
-        "TEST_SQS_QUEUE_URL", "http://localhost:4566/000000000000/Queue"
+        "TEST_SQS_QUEUE_URL",
+        "http://localhost:4566/000000000000/Queue",
     )
