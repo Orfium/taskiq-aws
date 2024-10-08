@@ -5,14 +5,14 @@ down:
 	docker compose down
 
 test: install-as-library
-	up
+	make up
 	chmod +x ./wait-for-it.sh
-	./wait-for-it.sh
+	poetry run ./wait-for-it.sh
 	export AWS_ACCESS_KEY_ID=FAKE &&\
 	export AWS_SECRET_ACCESS_KEY=FAKE &&\
 	export AWS_ENDPOINT_URL=http://localhost:4566 &&\
 	export TEST_SQS_QUEUE_URL=http://localhost:4566/000000000000/Queue &&\
-	pytest
+	poetry run pytest --cov=taskiq_sqs
 
 test-with-coverage-report: test
 	poetry run coverage report
