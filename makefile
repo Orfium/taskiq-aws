@@ -4,7 +4,8 @@ up:
 down:
 	docker compose down
 
-test: up
+test: install-as-library
+	up
 	chmod +x ./wait-for-it.sh
 	./wait-for-it.sh
 	export AWS_ACCESS_KEY_ID=FAKE &&\
