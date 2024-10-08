@@ -44,6 +44,15 @@ detect-secrets="1.5.0"
 types-mock = "^4.0.15"
 black = "^23.1.0"
 
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "1.1.2"
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version"
+]
+update_changelog_on_bump = true
+
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
