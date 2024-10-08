@@ -61,6 +61,6 @@ async def test_sqs_broker(
     await broker.kick(valid_broker_message)
     await asyncio.sleep(0.3)
 
-    message1 = await anext(broker.listen())  # noqa
+    message1 = await broker.listen().__anext__()
     assert message1.data == valid_broker_message.message
     await broker.shutdown()
