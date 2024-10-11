@@ -30,4 +30,3 @@ jobs:
     secrets:
       ORFIUM_GITHUB_APP_CI_CD_APP_ID: ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_ID }}
       ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY : ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
