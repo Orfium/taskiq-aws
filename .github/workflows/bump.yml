@@ -30,6 +30,10 @@ jobs:
           fetch-depth: 0
       - name: Install dependencies
         run: pip install -U commitizen
+      - name: Create version-merge branch
+        run: git checkout -b version-merge
+      - name: Push branch
+        run: git push origin version-merge
       - name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@master
         with:
