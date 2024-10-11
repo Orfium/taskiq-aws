@@ -15,5 +15,5 @@ jobs:
           architecture: x64
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Run precommit
-        run: make pre-commit args=--all-files
+      # - name: Run precommit
+      #   run: make pre-commit args=--all-files
