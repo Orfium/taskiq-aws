@@ -15,5 +15,5 @@ jobs:
           architecture: x64
       - name: Checkout Repository
         uses: actions/checkout@v4
-      # - name: Run tests with coverage
-      #   run: make test-with-coverage-report
+      - name: Run tests with coverage
+        run: make test-with-coverage-report
