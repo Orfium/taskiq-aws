@@ -5,11 +5,8 @@ on:
         required: true
       ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY:
         required: true
-
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+      GH_TOKEN:
+        required: true
 
 jobs:
   bump:
@@ -29,7 +26,7 @@ jobs:
         uses: actions/checkout@main
         with:
           # token: ${{ steps.app-token.outputs.token }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
       - name: Install dependencies
         run: pip install -U commitizen
@@ -37,7 +34,7 @@ jobs:
         uses: commitizen-tools/commitizen-action@master
         with:
           # github_token: ${{ steps.app-token.outputs.token }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_TOKEN }}
           branch: version-merge
       - name: Create Pull Request
         id: cpr
