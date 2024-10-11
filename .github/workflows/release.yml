@@ -3,6 +3,8 @@ on:
     secrets:
       pypi_password:
         required: true
+      GH_TOKEN:
+        required: true
 
 jobs:
   detect-release-parameters:

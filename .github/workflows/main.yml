@@ -5,6 +5,11 @@ on:
     branches:
       - "main"
 
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 concurrency:
   group: main
   cancel-in-progress: true
@@ -25,3 +30,4 @@ jobs:
     secrets:
       ORFIUM_GITHUB_APP_CI_CD_APP_ID: ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_ID }}
       ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY : ${{ secrets.ORFIUM_GITHUB_APP_CI_CD_APP_PRIVATE_KEY }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
