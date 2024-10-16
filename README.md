@@ -1,2 +1,3 @@
 # taskiq-sqs
 
+release
