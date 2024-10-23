@@ -3,7 +3,7 @@ name = "taskiq-aws"
 description = ""
 authors = ["Taskiq team <taskiq@no-reply.com>"]
 maintainers = ["Taskiq team <taskiq@no-reply.com>"]
-version = "0.2.0"
+version = "0.3.0"
 readme = "README.md"
 license = "LICENSE"
 classifiers = [
@@ -46,7 +46,7 @@ black = "^23.1.0"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.2.0"
+version = "0.3.0"
 tag_format = "v$version"
 version_files = [
     "pyproject.toml:version"
