@@ -12,7 +12,7 @@ test: install-as-library
 	export AWS_SECRET_ACCESS_KEY=FAKE &&\
 	export AWS_ENDPOINT_URL=http://localhost:4566 &&\
 	export TEST_SQS_QUEUE_URL=http://localhost:4566/000000000000/Queue &&\
-	poetry run pytest --cov=taskiq_sqs
+	poetry run pytest --cov=taskiq_aws
 
 test-with-coverage-report: test
 	poetry run coverage report

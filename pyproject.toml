@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "taskiq-sqs"
+name = "taskiq-aws"
 description = ""
 authors = ["Taskiq team <taskiq@no-reply.com>"]
 maintainers = ["Taskiq team <taskiq@no-reply.com>"]
@@ -21,7 +21,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
 ]
 keywords = ["taskiq", "tasks", "distributed", "async"]
-packages = [{ include = "taskiq_sqs" }]
+packages = [{ include = "taskiq_aws" }]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"

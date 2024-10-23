@@ -5,7 +5,7 @@ from typing import Union
 import pytest
 from taskiq import AckableMessage, AsyncBroker, BrokerMessage
 
-from taskiq_sqs import SQSBroker
+from taskiq_aws import SQSBroker
 
 
 def test_no_url_should_raise_typeerror() -> None:

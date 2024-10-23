@@ -1,3 +1,3 @@
-# taskiq-sqs
+# taskiq-aws
 
 release

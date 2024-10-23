@@ -2,7 +2,7 @@
 services:
 
   localstack:
-    container_name: taskiq_sqs_localstack
+    container_name: taskiq_aws_localstack
     image: localstack/localstack:3.6
     ports:
       - "127.0.0.1:4566:4566"

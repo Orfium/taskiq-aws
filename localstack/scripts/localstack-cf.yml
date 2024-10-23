@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: CloudFormation for TaskIQ-SQS
+Description: CloudFormation for TaskIQ-AWS
 Resources:
   Queue:
     Type: AWS::SQS::Queue

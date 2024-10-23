@@ -28,7 +28,7 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
-        args: [taskiq_sqs]
+        args: [taskiq_aws]
 
       - id: ruff
         name: Run ruff lints
@@ -39,5 +39,5 @@ repos:
         args:
           - "check"
           - "--fix"
-          - "taskiq_sqs"
+          - "taskiq_aws"
           - "tests"
