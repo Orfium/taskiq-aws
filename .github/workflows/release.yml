@@ -28,7 +28,7 @@ jobs:
           changelog: CHANGELOG.md
 
   release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: detect-release-parameters
     steps:
       - name: Checkout repo
