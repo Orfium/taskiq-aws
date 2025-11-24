@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: "3.10"
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Get release notes
@@ -32,7 +32,7 @@ jobs:
     needs: detect-release-parameters
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -50,7 +50,7 @@ jobs:
     needs: [ release, detect-release-parameters ]
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Create Release Notes File
         run: |
           echo "${{ join(fromJson(needs.detect-release-parameters.outputs.notes).notes, '') }}" > release_notes.txt
